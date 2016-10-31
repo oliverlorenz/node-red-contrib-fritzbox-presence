@@ -1,7 +1,7 @@
 {
   "name": "node-red-contrib-fritzbox-presence",
   "version": "1.0.2",
-  "description": "A node-RED node to list devices connected to a Fritz!Box",
+  "description": "node-RED node to list all devices currently connected to a Fritz!Box",
   "keywords": [
     "node-red",
     "fritzbox",
@@ -9,6 +9,8 @@
   ],
   "author": "Felix Fischer <kontakt@felixfischer.com>",
   "license": "GPL-3.0",
+  "repository": "felixfischer/node-red-contrib-fritzbox-presence",
+  "bugs": "https://github.com/felixfischer/node-red-contrib-fritzbox-presence/issues",
   "node-red": {
     "nodes": {
       "fritzbox-presence": "fritzbox-presence.js"
