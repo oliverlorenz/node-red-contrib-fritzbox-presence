@@ -1,0 +1,53 @@
+<script type="text/javascript">
+    RED.nodes.registerType('fritzbox-presence', {
+        category: 'fritzbox',
+        color: '#d08181',
+        defaults: {
+            name: {
+                value: "",
+                required: false
+            },
+            host: {
+                value: "fritz.box",
+                required: true
+            }
+        },
+        credentials: {
+            username: {
+                type: "text"
+            },
+            password: {
+                type: "password"
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "fritz.png",
+        label: function() {
+            return this.name || "Fritz!Box Presence";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="fritzbox-presence">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-host"><i class="fa fa-keyboard-o"></i>Host</label>
+        <input type="text" id="node-input-host" placeholder="fritz.box">
+    </div>
+    <div class="form-row">
+        <label for="node-input-username"><i class="icon-tag"></i> Username</label>
+        <input type="text" id="node-input-username">
+    </div>
+    <div class="form-row">
+        <label for="node-input-password"><i class="icon-tag"></i> Password</label>
+        <input type="password" id="node-input-password">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="fritzbox-presence">
+    <p>A node that lists devices connected to a Fritz!Box</p>
+</script>

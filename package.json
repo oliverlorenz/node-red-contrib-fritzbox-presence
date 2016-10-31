@@ -1,0 +1,13 @@
+{
+    "name": "node-red-contrib-fritzbox-presence",
+    "version": "1.0.0",
+    "description": "A node-red node that lists devices connected to a Fritz!Box",
+    "keywords": ["node-red", "fritzbox", "presence"],
+    "author": "Felix Fischer <kontakt@felixfischer.com>",
+    "license": "GPL-2.0",
+    "node-red": {
+        "nodes": {
+            "fritzbox-presence": "fritzbox-presence.js"
+        }
+    }
+}
