@@ -8,11 +8,13 @@ module.exports = function(RED) {
         var username = this.credentials.username || ''
         var password = this.credentials.password || ''
         var node = this
+        var sessionID = ''
 
         function getDevices(sid) {
-            sid = sid || ''
+            sid = sid || sessionID
             fritz.checkSession(sid, function(isSession) {
                 if (isSession) {
+                    sessionID = sid
                     node.status({ fill: "green", shape: "dot", text: "querying" })
                     fritz.getData(sid, function(data) {
                         data = JSON.parse(data)
