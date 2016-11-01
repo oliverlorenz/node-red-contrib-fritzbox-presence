@@ -30,9 +30,10 @@ module.exports = function(RED) {
                 node.status({ fill: "green", shape: "dot", text: "querying" })
                 fritz.getData(sid, function(res) {
                     try {
-                        var devices = JSON.parse(res).data.active
+                        res = JSON.parse(res)
+                        var devices = res.data.active
                         node.status({ fill: "green", shape: "ring", text: `${devices.length} devices detected` })
-                        node.send({ payload: devices })
+                        node.send({ payload: devices, full_response: res })
                     } catch (e) {
                         node.status({ fill: "red", shape: "dot", text: "data error" })
                         node.error(e)
