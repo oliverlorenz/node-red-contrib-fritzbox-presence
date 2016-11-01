@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-fritzbox-presence",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "node-RED node to list all devices currently connected to a Fritz!Box",
   "keywords": [
     "node-red",
