@@ -1,0 +1,61 @@
+[
+    {
+        "id": "11e05c1d.729ab4",
+        "type": "comment",
+        "z": "e84149f7.6f2188",
+        "name": "Instructions - README",
+        "info": "1. configure _Fritz!Box Presence_ with username/password\n2. deploy flow\n3. click button on first node\n4. check output in debug pane",
+        "x": 160,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "6c67e213.de34bc",
+        "type": "inject",
+        "z": "e84149f7.6f2188",
+        "name": "← click to start",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 140,
+        "y": 100,
+        "wires": [ [ "1faf3fc3.680aa" ] ]
+    },
+    {
+        "id": "1faf3fc3.680aa",
+        "type": "fritzbox-presence",
+        "z": "e84149f7.6f2188",
+        "name": "",
+        "host": "fritz.box",
+        "x": 370,
+        "y": 100,
+        "wires": [ [ "eb965b3a.aa8ba8" ] ]
+    },
+    {
+        "id": "eb965b3a.aa8ba8",
+        "type": "function",
+        "z": "e84149f7.6f2188",
+        "name": "format output",
+        "func": "var devs = []\n\nmsg.payload.forEach(function(n) {\n    devs.push({ UID: n.UID, mac: n.mac, name: n.name })\n})\n\nreturn {payload: devs}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 600,
+        "y": 100,
+        "wires": [ [ "9cded11.acf323" ] ]
+    },
+    {
+        "id": "9cded11.acf323",
+        "type": "debug",
+        "z": "e84149f7.6f2188",
+        "name": "debug output",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 820,
+        "y": 100,
+        "wires": []
+    }
+]
