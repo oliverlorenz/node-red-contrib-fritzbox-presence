@@ -13,6 +13,11 @@ module.exports = function(RED) {
         node.status({})
 
         function getDevices(sid) {
+            if (sid == '0000000000000000') {
+                node.status({ fill: "red", shape: "dot", text: "connection error" })
+                node.error('could not get a valid session ID. Please check credentials.')
+                return
+            }
             sid = sid || sessionID
             fritz.checkSession(sid, function(isSession) {
                 if (isSession) {
@@ -22,7 +27,7 @@ module.exports = function(RED) {
                         data = JSON.parse(data)
                         var devices = data.data.active
                         node.send({ payload: data.data.active })
-                        node.status({ fill: "grey", shape: "ring", text: `found ${devices.length} devices - idling` })
+                        node.status({ fill: "green", shape: "ring", text: `${devices.length} devices detected` })
                     })
                 } else {
                     node.status({ fill: "green", shape: "ring", text: "connecting" })
@@ -33,13 +38,12 @@ module.exports = function(RED) {
 
         this.on('input', function(msg) {
             node.status({ fill: "yellow", shape: "dot", text: "starting" })
-            try {
-                getDevices()
-            } catch (e) {
-                node.status({ fill: "red", shape: "dot", text: "error" })
-            }
+            getDevices()
         })
 
+        this.on('close', function() {
+            node.status({})
+        })
     }
 
     RED.nodes.registerType("fritzbox-presence", FritzBoxPresence, {
