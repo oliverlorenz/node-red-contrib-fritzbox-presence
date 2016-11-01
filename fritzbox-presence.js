@@ -10,6 +10,8 @@ module.exports = function(RED) {
         var node = this
         var sessionID = ''
 
+        node.status({})
+
         function getDevices(sid) {
             sid = sid || sessionID
             fritz.checkSession(sid, function(isSession) {
