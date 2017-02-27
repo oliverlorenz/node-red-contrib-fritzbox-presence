@@ -29,7 +29,7 @@
         "type": "fritzbox-presence",
         "z": "e84149f7.6f2188",
         "name": "",
-        "host": "fritz.box",
+        "host": "169.254.1.1",
         "x": 370,
         "y": 100,
         "wires": [ [ "eb965b3a.aa8ba8" ] ]
