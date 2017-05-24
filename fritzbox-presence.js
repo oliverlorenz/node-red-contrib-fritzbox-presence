@@ -3,24 +3,27 @@ const fritz = require('./fritz')
 module.exports = function(RED) {
 
     function FritzBoxPresence(config) {
-
         RED.nodes.createNode(this, config)
-        var username = this.credentials.username || ''
-        var password = this.credentials.password || ''
+        var credentials = RED.nodes.getNode(config.fritz)
+        var username = credentials.username
+        var password = credentials.password
+        var hostname = credentials.hostname
         var node = this
         var sessionID = ''
 
         node.status({})
 
         function getDevices(sid) {
-            if (sid == '0000000000000000') {
+            if (sid === '0000000000000000') {
                 node.status({ fill: "red", shape: "dot", text: "connection error" })
                 return node.error('could not get a valid session ID. Please check credentials.')
             }
             sid = sid || sessionID
             if (sid == '' || typeof sid != 'string') {
                 node.status({ fill: "green", shape: "ring", text: "connecting" })
-                return fritz.getSessionID(username, password, getDevices)
+                return fritz.getSessionID(username, password, getDevices, {
+                  host: hostname
+                })
             }
             fritz.checkSession(sid, function(isSession) {
                 if (!isSession) {
@@ -38,7 +41,11 @@ module.exports = function(RED) {
                         node.status({ fill: "red", shape: "dot", text: "data error" })
                         node.error(e)
                     }
+                }, {
+                  host: hostname
                 })
+            }, {
+              host: hostname
             })
         }
 
@@ -49,11 +56,6 @@ module.exports = function(RED) {
         })
     }
 
-    RED.nodes.registerType("fritzbox-presence", FritzBoxPresence, {
-        credentials: {
-            username: { type: "text" },
-            password: { type: "password" }
-        }
-    })
+    RED.nodes.registerType("fritzbox-presence", FritzBoxPresence)
 
 }

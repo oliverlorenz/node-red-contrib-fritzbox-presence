@@ -13,7 +13,8 @@
   "bugs": "https://github.com/felixfischer/node-red-contrib-fritzbox-presence/issues",
   "node-red": {
     "nodes": {
-      "fritzbox-presence": "fritzbox-presence.js"
+      "fritzbox-presence": "fritzbox-presence.js",
+      "fritzbox-presence-credentials": "fritzbox-presence-credentials.js"
     }
   }
 }

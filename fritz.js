@@ -1,9 +1,7 @@
 const http = require('http')
 
-
 module.exports.checkSession = function(sid, callback, options) {
     options || (options = {})
-    options.host || (options.host = 'fritz.box')
     options.path || (options.path = '/login_sid.lua')
     options.path += '?sid=' + sid
     try {
@@ -21,13 +19,11 @@ module.exports.checkSession = function(sid, callback, options) {
     }
 }
 
-
 module.exports.getSessionID = function(username, password, callback, options) {
     if (typeof username != 'string') throw new Error('Invalid username')
     if (typeof password != 'string') throw new Error('Invalid password')
 
     options || (options = {})
-    options.host || (options.host = 'fritz.box')
     options.path || (options.path = '/login_sid.lua')
 
     var sessionID = ""
@@ -56,7 +52,6 @@ module.exports.getSessionID = function(username, password, callback, options) {
         throw new Error('Error getting Session ID from FritzBox. Please check configuration.')
     }
 }
-
 
 module.exports.getData = function(sid, callback, options) {
     options || (options = {})

@@ -3,22 +3,7 @@
         category: 'fritzbox',
         color: '#d08181',
         defaults: {
-            name: {
-                value: "",
-                required: false
-            },
-            host: {
-                value: "fritz.box",
-                required: true
-            }
-        },
-        credentials: {
-            username: {
-                type: "text"
-            },
-            password: {
-                type: "password"
-            }
+          fritz: { type:'fritzbox-presence-credentials', required: true },
         },
         inputs: 1,
         outputs: 1,
@@ -31,20 +16,16 @@
 
 <script type="text/x-red" data-template-name="fritzbox-presence">
     <div class="form-row">
+      <label for="node-input-fritz">Fritz</label>
+      <input id="node-input-fritz"></input>
+    </div>
+    <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-host"><i class="fa fa-keyboard-o"></i>Host</label>
+        <label for="node-input-host"><i class="fa fa-keyboard-o"></i> Host</label>
         <input type="text" id="node-input-host" placeholder="fritz.box">
-    </div>
-    <div class="form-row">
-        <label for="node-input-username"><i class="icon-tag"></i> Username</label>
-        <input type="text" id="node-input-username">
-    </div>
-    <div class="form-row">
-        <label for="node-input-password"><i class="icon-tag"></i> Password</label>
-        <input type="password" id="node-input-password">
     </div>
 </script>
 
