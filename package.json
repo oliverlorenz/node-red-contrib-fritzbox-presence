@@ -7,10 +7,18 @@
     "fritzbox",
     "presence"
   ],
-  "author": "Felix Fischer <kontakt@felixfischer.com>",
+  "author": {
+    "name": "Oliver Lorenz",
+    "email": "mail@oliverlorenz.com",
+    "url": "https://oliverlorenz.com"
+  },
+  "contributors": [{
+    "name": "Felix Fischer",
+    "email": "kontakt@felixfischer.com"
+  }],
   "license": "GPL-3.0",
-  "repository": "felixfischer/node-red-contrib-fritzbox-presence",
-  "bugs": "https://github.com/felixfischer/node-red-contrib-fritzbox-presence/issues",
+  "repository": "oliverlorenz/node-red-contrib-fritzbox-presence",
+  "bugs": "https://github.com/oliverlorenz/node-red-contrib-fritzbox-presence/issues",
   "node-red": {
     "nodes": {
       "fritzbox-presence": "fritzbox-presence.js",
