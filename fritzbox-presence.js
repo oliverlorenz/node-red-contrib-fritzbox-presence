@@ -1,4 +1,14 @@
 const fritz = require('./fritz')
+const bluebird = require('bluebird')
+
+function setNodeStatusToConnectionError(node, error) {
+  node.status({ fill: "red", shape: "dot", text: error.message })
+  node.error(error)
+}
+
+function setNodeStatusToQuerying(node) {
+  node.status({ fill: "yellow", shape: "ring", text: "querying" })
+}
 
 module.exports = function(RED) {
 
@@ -9,53 +19,41 @@ module.exports = function(RED) {
         var password = credentials.password
         var hostname = credentials.hostname
         var node = this
-        var sessionID = ''
+        let sessionID
 
-        node.status({})
-
-        function getDevices(sid) {
-            if (sid === '0000000000000000') {
-                node.status({ fill: "red", shape: "dot", text: "connection error" })
-                return node.error('could not get a valid session ID. Please check credentials.')
-            }
-            sid = sid || sessionID
-            if (sid == '' || typeof sid != 'string') {
-                node.status({ fill: "green", shape: "ring", text: "connecting" })
-                return fritz.getSessionID(username, password, getDevices, {
-                  host: hostname
-                })
-            }
-            fritz.checkSession(sid, function(isSession) {
-                if (!isSession) {
-                    return getDevices()
-                }
-                sessionID = sid
-                node.status({ fill: "green", shape: "dot", text: "querying" })
-                fritz.getData(sid, function(res) {
-                    try {
-                        res = JSON.parse(res)
-                        var devices = res.data.active
-                        node.status({ fill: "green", shape: "ring", text: `${devices.length} devices detected` })
-                        node.send({ payload: devices, full_response: res })
-                    } catch (e) {
-                        node.status({ fill: "red", shape: "dot", text: "data error" })
-                        node.error(e)
-                    }
-                }, {
-                  host: hostname
-                })
-            }, {
-              host: hostname
+        this.on('input', () => {
+          setNodeStatusToQuerying(node)
+          const options = { host: hostname }
+          return fritz.checkSession(sessionID, options)
+            .then((isSession) => {
+              if (!isSession) {
+                return fritz.getSessionID(username, password, options)
+              }
+              return Promise.resolve(sessionID)
             })
-        }
-
-        this.on('input', getDevices)
-
+            .then((foundSessionId) => {
+              if (foundSessionId === '0000000000000000') {
+                throw new Error('Unvaild session id')
+              }
+              sessionID = foundSessionId
+              return fritz.getData(sessionID, options)
+            })
+            .then((response) => {
+              response = JSON.parse(response)
+              const devices = response.data.active
+              node.status({ fill: "green", shape: "ring", text: `${devices.length} active devices detected` })
+              node.send({ payload: devices, full_response: response })
+            })
+            .catch((err) => {
+              setNodeStatusToConnectionError(node, err)
+            })
+        })
+        this.on('error', () => {
+          console.log('ääääääääääääää')
+        })
         this.on('close', function() {
             node.status({})
         })
     }
-
     RED.nodes.registerType("fritzbox-presence", FritzBoxPresence)
-
 }

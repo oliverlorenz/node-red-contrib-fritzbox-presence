@@ -16,5 +16,8 @@
       "fritzbox-presence": "fritzbox-presence.js",
       "fritzbox-presence-credentials": "fritzbox-presence-credentials.js"
     }
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0"
   }
 }
