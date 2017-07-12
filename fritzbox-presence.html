@@ -1,7 +1,8 @@
 <script type="text/javascript">
     RED.nodes.registerType('fritzbox-presence', {
         category: 'fritzbox',
-        color: '#d08181',
+        color: '#2E90DD',
+        paletteLabel: 'FRITZ!Box Presence', 
         defaults: {
           fritz: { type:'fritzbox-presence-credentials', required: true },
         },
@@ -9,7 +10,7 @@
         outputs: 1,
         icon: "fritz.png",
         label: function() {
-            return this.name || "Fritz!Box Presence";
+            return this.name || "FRITZ!Box Presence";
         }
     });
 </script>
