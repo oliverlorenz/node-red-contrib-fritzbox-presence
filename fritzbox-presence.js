@@ -40,7 +40,7 @@ module.exports = function(RED) {
             })
             .then((response) => {
               response = JSON.parse(response)
-              const devices = response.data.active
+              const devices = response.data.net.devices
               node.status({ fill: "green", shape: "ring", text: `${devices.length} active devices detected` })
               node.send({ payload: devices, full_response: response })
             })
