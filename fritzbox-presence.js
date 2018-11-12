@@ -1,5 +1,6 @@
 const fritz = require('./fritz')
 const bluebird = require('bluebird')
+var parseXML = require('xml2js').parseString
 
 function setNodeStatusToConnectionError(node, error) {
   node.status({ fill: "red", shape: "dot", text: error.message })
@@ -21,7 +22,7 @@ module.exports = function(RED) {
         var node = this
         let sessionID
 
-        this.on('input', () => {
+        this.on('input', (msg) => {
           setNodeStatusToQuerying(node)
           const options = { host: hostname }
           return fritz.checkSession(sessionID, options)
@@ -39,17 +40,29 @@ module.exports = function(RED) {
               return fritz.getData(sessionID, options)
             })
             .then((response) => {
-              response = JSON.parse(response)
-              const devices = response.data.net.devices
-              node.status({ fill: "green", shape: "ring", text: `${devices.length} active devices detected` })
-              node.send({ payload: devices, full_response: response })
+              var data = ""
+              parseXML(response, {trim: true, explicitArray: false}, function (err, result) {
+                data = result['List']['Item']
+              })
+              if(msg.payload === 'online' || msg.payload === 'offline') {
+                var newList = []
+                data.forEach( function(n) {
+                  if(n.Active == (msg.payload==='online'?1:0))
+                  newList.push(n)
+                })
+                data = newList
+              }
+              else
+                msg.payload = 'all'
+              node.status({ fill: "green", shape: "ring", text: `${data.length} devices (` + msg.payload + `)` })
+              node.send({ payload: data, full_response: response, mode: msg.payload})
             })
             .catch((err) => {
               setNodeStatusToConnectionError(node, err)
             })
         })
         this.on('error', () => {
-          console.log('ääääääääääääää')
+          console.log('error')
         })
         this.on('close', function() {
             node.status({})
