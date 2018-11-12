@@ -50,7 +50,8 @@ function getSessionID(username, password, options) {
 }
 
 function getData(sid, options) {
-    options.path = '/data.lua?xhr=1&page=netDev&type=cleanup&no_sidrenew=&sid=' + sid
+    options.port = 49000
+    options.path = '/devicehostlist.lua?sid=' + sid
     return Promise.try(() => {
       return request(options)
     })
